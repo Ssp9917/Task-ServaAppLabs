@@ -36,7 +36,7 @@ function App() {
           </ProtectedRoutesForAdmin>
         },
         {
-          path:'admin/editProduct',element:
+          path:'admin/editProduct/:id',element:
           <ProtectedRoutesForAdmin>
             <EditProduct/>
           </ProtectedRoutesForAdmin>

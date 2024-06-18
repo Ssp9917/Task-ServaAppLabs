@@ -38,15 +38,10 @@ const Context = (props) => {
   console.log(user)
 
 
-  // product edit function
-  const productEditHandler = (id) => {
-
-    axios.put(API_BASE_URL+PRODUCT_BASE_URL+'/editProduct/'+id)
-        
-  }
+ 
 
   return (
-    <MainContext.Provider value={{API_BASE_URL,USER_BASE_URL,user,PRODUCT_BASE_URL,product,getAllProductHandler,imageBaseUrl,productEditHandler}}>{props.children}</MainContext.Provider>
+    <MainContext.Provider value={{API_BASE_URL,USER_BASE_URL,user,PRODUCT_BASE_URL,product,getAllProductHandler,imageBaseUrl}}>{props.children}</MainContext.Provider>
   )
 }
 

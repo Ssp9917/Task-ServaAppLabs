@@ -12,9 +12,9 @@ router.post(
   }),
   addProduct
 );
-router.get("/getAllProduct/:id", getAllProduct);
+router.get("/getAllProduct/:id?", getAllProduct);
 router.delete('/deleteProduct/:id',deleteProduct);
-router.put('editProduct/:id',updateProduct)
+router.put('/editProduct/:id',updateProduct)
 
 
 export default router;

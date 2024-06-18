@@ -85,11 +85,62 @@ export const updateProduct = async (req,res) => {
     const image = req.files.image
     const id = req.params.id
 
+    console.log(req.files.image)
+
+    if (image == null) {
+      Product
+        .updateOne(
+          { _id: id },
+          {
+            name,
+            price,
+            qty,
+            description
+          }
+        )
+        .then(() => {
+         res.status('200').json({success:"Product updated successfully"})
+        })
+        .catch(() => {
+          res.status("401").json({error:"product not updated"})
+        });
+    } else {
+      const imageName =
+        new Date().getTime() +
+        Math.floor(Math.random() * 1000) +
+        image.name;
+
+      const destination = "./public/images/product/" + imageName;
+      image.mv(destination, (err) => {
+        if (!err) {
+          Product
+            .updateOne(
+              { _id: id },
+              {
+                name,
+                price,
+                qty,
+                description,
+                image:imageName
+              }
+            )
+            .then(() => {
+              res.status(200).json({success:"data updated"})
+            })
+            .catch(() => {
+              res.status("401").json({error:"product not updated"})
+            });
+        } else {
+          res.status("401").json({error:"unable to upload file"})
+        }
+      });
+    }
+
 
 
     
   } catch (error) {
-    console.log("Error in deleteProduct controller", error.message);
+    console.log("Error in updateProduct controller", error.message);
     res.status(500).json({ error: "Internal Server Error" });
   }
 }

@@ -2,43 +2,83 @@ import React, { useContext, useEffect, useState } from "react";
 import { MainContext } from "../../context/Context";
 import { useParams } from "react-router-dom";
 import axios from "axios"
+import { FileUploader } from "react-drag-drop-files";
 
 const EditProduct = () => {
-  const { productEditHandler } = useContext(MainContext);
+  const { API_BASE_URL , PRODUCT_BASE_URL } = useContext(MainContext);
 
   const [editProduct, setEditProduct] = useState();
 
-  const { id } = useParams();
+  const {id}= useParams();
+ 
 
-  const {API_BASE_URL,PRODUCT_BASE_URL} = useContext(MainContext)
 
   //findSingle Product details
   useEffect(() => {
     axios
-      .get(API_BASE_URL + PRODUCT_BASE_URL + "/" + id)
+      .get(API_BASE_URL + PRODUCT_BASE_URL + "/getAllProduct/" + id)
       .then((success) => {
-        console.log(success);
+        setEditProduct(success.data.product);
       })
       .catch((err) => {
         console.log(err);
       });
   }, []);
 
+  const [file, setFile] = useState(null);
+  const handleChange = (file) => {
+    // console.log(file)
+    setFile(file);
+  };
+
+//   console.log(editProduct)
+
+
+ // product edit function
+ const productEditHandler = (e) => {
+
+    e.preventDefault();
+
+    const formData = new FormData();
+    formData.append("name", e.target.name.value);
+    formData.append("price", e.target.price.value);
+    formData.append("description", e.target.description.value);
+    formData.append("qty", e.target.qty.value);
+    formData.append("image", file);
+    
+    console.log(API_BASE_URL+PRODUCT_BASE_URL+'/editProduct/'+id)
+
+
+    axios.put(API_BASE_URL+PRODUCT_BASE_URL+'/editProduct/'+id,formData).then(
+      (success)=>{
+        console.log(success)
+      }
+    ).catch(
+      (err)=>{
+        console.log(err)
+      }
+    )
+
+        
+  }
+
   return (
     <div>
       <div className=" flex justify-center items-center ">
-        <form >
+        <form  onSubmit={productEditHandler}>
           <div className=" bg-gray-800 px-10 py-10 rounded-xl ">
             <div className="">
               <h1 className="text-center text-white text-xl mb-4 font-bold">
                 Edit Product
               </h1>
             </div>
-            {/* <FileUploader handleChange={handleChange} name="file" /> */}
+            <FileUploader handleChange={handleChange} name="file" />
             <div>
               <input
                 type="text"
                 name="name"
+                value={editProduct?.name}
+                onChange={(e) => setEditProduct({ ...editProduct, name: e.target.value })}
                 className=" bg-gray-600 mb-4 px-2 py-2 w-full lg:w-[20em] rounded-lg text-white placeholder:text-gray-200 outline-none"
                 placeholder="Product title"
               />
@@ -47,6 +87,8 @@ const EditProduct = () => {
               <input
                 type="text"
                 name="price"
+                value={editProduct?.price}
+                onChange={(e) => setEditProduct({ ...editProduct, price: e.target.value })}
                 className=" bg-gray-600 mb-4 px-2 py-2 w-full lg:w-[20em] rounded-lg text-white placeholder:text-gray-200 outline-none"
                 placeholder="Product price"
               />
@@ -55,6 +97,8 @@ const EditProduct = () => {
               <input
                 type="text"
                 name="description"
+                value={editProduct?.description}
+                onChange={(e) => setEditProduct({ ...editProduct, description: e.target.value })}
                 className=" bg-gray-600 mb-4 px-2 py-2 w-full lg:w-[20em] rounded-lg text-white placeholder:text-gray-200 outline-none"
                 placeholder="Product description"
               />
@@ -63,6 +107,8 @@ const EditProduct = () => {
               <input
                 type="number"
                 name="qty"
+                value={editProduct?.qty}
+                onChange={(e) => setEditProduct({ ...editProduct, qty: e.target.value })}
                 className=" bg-gray-600 mb-4 px-2 py-2 w-full lg:w-[20em] rounded-lg text-white placeholder:text-gray-200 outline-none"
                 placeholder="Product qty"
               />
