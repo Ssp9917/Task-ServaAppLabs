@@ -45,6 +45,8 @@ const EditProduct = () => {
     formData.append("description", e.target.description.value);
     formData.append("qty", e.target.qty.value);
     formData.append("image", file);
+
+    console.log(formData)
     
     console.log(API_BASE_URL+PRODUCT_BASE_URL+'/editProduct/'+id)
 
@@ -58,8 +60,6 @@ const EditProduct = () => {
         console.log(err)
       }
     )
-
-        
   }
 
   return (

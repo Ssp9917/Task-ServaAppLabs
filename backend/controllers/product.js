@@ -5,9 +5,9 @@ export const addProduct = async (req, res) => {
     const { name, description, qty, price } = req.body;
     const image = req.files.image;
 
-    console.log(req.files.image);
+    // console.log(req.files.image);
 
-    console.log(name, description, qty, image, price);
+    // console.log(name, description, qty, image, price);
 
     // file related code start
     const imageName =
@@ -82,14 +82,17 @@ export const updateProduct = async (req,res) => {
   try {
 
     const {name,description,qty,price} = req.body
-    const image = req.files.image
+    const image = req.files?.image
     const id = req.params.id
 
-    console.log(req.files.image)
+    console.log(name,description,qty,price)
+
+
+    console.log(req.params.id)
 
     if (image == null) {
-      Product
-        .updateOne(
+     await Product
+        .findByIdAndUpdate(
           { _id: id },
           {
             name,
@@ -99,10 +102,10 @@ export const updateProduct = async (req,res) => {
           }
         )
         .then(() => {
-         res.status('200').json({success:"Product updated successfully"})
+         res.status(200).json({success:"Product updated successfully"})
         })
         .catch(() => {
-          res.status("401").json({error:"product not updated"})
+          res.status(401).json({error:"product not updated"})
         });
     } else {
       const imageName =
@@ -111,9 +114,9 @@ export const updateProduct = async (req,res) => {
         image.name;
 
       const destination = "./public/images/product/" + imageName;
-      image.mv(destination, (err) => {
+      image.mv(destination, async (err) => {
         if (!err) {
-          Product
+         await Product
             .updateOne(
               { _id: id },
               {
@@ -128,10 +131,10 @@ export const updateProduct = async (req,res) => {
               res.status(200).json({success:"data updated"})
             })
             .catch(() => {
-              res.status("401").json({error:"product not updated"})
+              res.status(401).json({error:"product not updated"})
             });
         } else {
-          res.status("401").json({error:"unable to upload file"})
+          res.status(401).json({error:"unable to upload file"})
         }
       });
     }
