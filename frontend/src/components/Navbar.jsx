@@ -6,7 +6,7 @@ const Navbar = () => {
 
   const {user} = useContext(MainContext)
 
-  console.log(user)
+  // console.log(user)
 
   return (
     <nav className="bg-white border-gray-200 dark:bg-gray-900">

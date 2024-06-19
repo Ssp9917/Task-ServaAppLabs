@@ -2,10 +2,11 @@ import React, { useContext, useState } from 'react'
 import { MainContext } from '../../context/Context';
 import { FileUploader } from "react-drag-drop-files";
 import axios from 'axios';
+import { useAddProductMutation } from '../../redux/apiSlice';
 
 const AddProduct = () => {
 
-    const {PRODUCT_BASE_URL,API_BASE_URL,getAllProductHandler} = useContext(MainContext)
+   
 
     // file drop related
   const [file, setFile] = useState(null);
@@ -13,6 +14,13 @@ const AddProduct = () => {
     // console.log(file)
     setFile(file);
   };
+
+  const [addProduct] = useAddProductMutation()
+
+  const data = useAddProductMutation()
+  console.log(data)
+
+  // console.log(addProduct)
 
 // product submit api
 const productSubmitHandler = (e) =>{
@@ -25,20 +33,8 @@ const productSubmitHandler = (e) =>{
     formData.append("description",e.target.description.value);
     formData.append("image",file);
     formData.append("qty",e.target.qty.value);
-
-    console.log(formData)
     
-    axios.post(API_BASE_URL+PRODUCT_BASE_URL+'/addProduct',formData).then(
-      (success)=>{
-
-       alert("Product added successfull")
-       getAllProductHandler()
-      }
-    ).catch(
-      (err)=>{
-        console.log(err)
-      }
-    )
+    addProduct(formData)
   }
 
 

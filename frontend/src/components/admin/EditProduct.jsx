@@ -1,17 +1,19 @@
 import React, { useContext, useEffect, useState } from "react";
 import { MainContext } from "../../context/Context";
 import { useParams } from "react-router-dom";
-import axios from "axios"
+import axios from "axios";
 import { FileUploader } from "react-drag-drop-files";
+import { useUpdateProductMutation } from "../../redux/apiSlice";
 
 const EditProduct = () => {
-  const { API_BASE_URL , PRODUCT_BASE_URL,getAllProductHandler } = useContext(MainContext);
+  const { API_BASE_URL, PRODUCT_BASE_URL, getAllProductHandler } =
+    useContext(MainContext);
 
   const [editProduct, setEditProduct] = useState();
 
-  const {id}= useParams();
- 
+  const { id } = useParams();
 
+  const [updateProduct] = useUpdateProductMutation();
 
   //findSingle Product details
   useEffect(() => {
@@ -27,48 +29,28 @@ const EditProduct = () => {
 
   const [file, setFile] = useState(null);
   const handleChange = (file) => {
-    // console.log(file)
     setFile(file);
   };
 
-//   console.log(editProduct)
 
-
- // product edit function
- const productEditHandler = (e) => {
-
+  // product edit function
+  const productEditHandler = (e) => {
     e.preventDefault();
 
     const formData = new FormData();
-    formData.append("name",e.target.name.value);
-    formData.append("price",e.target.price.value);
-    formData.append("description",e.target.description.value);
-    formData.append("image",file);
-    formData.append("qty",e.target.qty.value);
+    formData.append("name", e.target.name.value);
+    formData.append("price", e.target.price.value);
+    formData.append("description", e.target.description.value);
+    formData.append("image", file);
+    formData.append("qty", e.target.qty.value);
 
-
-
-    
-    console.log(formData)
-
-
-    axios.put(API_BASE_URL+PRODUCT_BASE_URL+'/editProduct/'+id,formData).then(
-      (success)=>{
-        alert("Product updated success")
-        getAllProductHandler()
-        console.log(success)
-      }
-    ).catch(
-      (err)=>{
-        console.log(err)
-      }
-    )
-  }
+    updateProduct({ id, formData });
+  };
 
   return (
     <div>
       <div className=" flex justify-center items-center ">
-        <form  onSubmit={productEditHandler}>
+        <form onSubmit={productEditHandler}>
           <div className=" bg-gray-800 px-10 py-10 rounded-xl ">
             <div className="">
               <h1 className="text-center text-white text-xl mb-4 font-bold">
@@ -81,7 +63,9 @@ const EditProduct = () => {
                 type="text"
                 name="name"
                 value={editProduct?.name}
-                onChange={(e) => setEditProduct({ ...editProduct, name: e.target.value })}
+                onChange={(e) =>
+                  setEditProduct({ ...editProduct, name: e.target.value })
+                }
                 className=" bg-gray-600 mb-4 px-2 py-2 w-full lg:w-[20em] rounded-lg text-white placeholder:text-gray-200 outline-none"
                 placeholder="Product title"
               />
@@ -91,7 +75,9 @@ const EditProduct = () => {
                 type="text"
                 name="price"
                 value={editProduct?.price}
-                onChange={(e) => setEditProduct({ ...editProduct, price: e.target.value })}
+                onChange={(e) =>
+                  setEditProduct({ ...editProduct, price: e.target.value })
+                }
                 className=" bg-gray-600 mb-4 px-2 py-2 w-full lg:w-[20em] rounded-lg text-white placeholder:text-gray-200 outline-none"
                 placeholder="Product price"
               />
@@ -101,7 +87,12 @@ const EditProduct = () => {
                 type="text"
                 name="description"
                 value={editProduct?.description}
-                onChange={(e) => setEditProduct({ ...editProduct, description: e.target.value })}
+                onChange={(e) =>
+                  setEditProduct({
+                    ...editProduct,
+                    description: e.target.value,
+                  })
+                }
                 className=" bg-gray-600 mb-4 px-2 py-2 w-full lg:w-[20em] rounded-lg text-white placeholder:text-gray-200 outline-none"
                 placeholder="Product description"
               />
@@ -111,7 +102,9 @@ const EditProduct = () => {
                 type="number"
                 name="qty"
                 value={editProduct?.qty}
-                onChange={(e) => setEditProduct({ ...editProduct, qty: e.target.value })}
+                onChange={(e) =>
+                  setEditProduct({ ...editProduct, qty: e.target.value })
+                }
                 className=" bg-gray-600 mb-4 px-2 py-2 w-full lg:w-[20em] rounded-lg text-white placeholder:text-gray-200 outline-none"
                 placeholder="Product qty"
               />

@@ -1,32 +1,22 @@
 import React, { useContext } from "react";
 import { MainContext } from "../../context/Context";
-import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { useDeleteProductMutation } from "../../redux/apiSlice";
 
 const ProductList = () => {
   const {
     product,
     imageBaseUrl,
     API_BASE_URL,
-    PRODUCT_BASE_URL,
-    getAllProductHandler,
  
   } = useContext(MainContext);
 
   const navigator = useNavigate()
 
+  const [deleteProduct] = useDeleteProductMutation()
 
-  const deleteProductHandler = (id) => {
-    axios
-      .delete(API_BASE_URL + PRODUCT_BASE_URL + "/deleteProduct/" + id)
-      .then((success) => {
-        alert(success.data.success);
-        getAllProductHandler();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+
+
 
   return (
     <div className="relative overflow-x-auto ">
@@ -51,8 +41,8 @@ const ProductList = () => {
             </th>
           </tr>
         </thead>
-        {product.map((d, i) => {
-          console.log(API_BASE_URL + imageBaseUrl + d.image);
+        {product?.map((d, i) => {
+          // console.log(API_BASE_URL + imageBaseUrl + d.image);
           return (
             <tbody className="" key={i}>
               <tr className="bg-gray-50 border-b  dark:border-gray-700">
@@ -74,7 +64,7 @@ const ProductList = () => {
                     <div className=" flex gap-2 cursor-pointer text-black ">
                       <div
                         onClick={() => {
-                          deleteProductHandler(d._id);
+                          deleteProduct(d._id);
                         }}
                       >
                         <svg

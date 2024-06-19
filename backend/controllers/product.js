@@ -92,7 +92,7 @@ export const updateProduct = async (req,res) => {
 
     if (image == null) {
      await Product
-        .findByIdAndUpdate(
+        .updateOne(
           { _id: id },
           {
             name,
@@ -101,6 +101,9 @@ export const updateProduct = async (req,res) => {
             description
           }
         )
+
+        
+
         .then(() => {
          res.status(200).json({success:"Product updated successfully"})
         })
