@@ -24,10 +24,10 @@ const productSubmitHandler = (e) =>{
     formData.append("price",e.target.price.value);
     formData.append("description",e.target.description.value);
     formData.append("image",file);
-    formData.append("qty",e.target.qty.value);;
+    formData.append("qty",e.target.qty.value);
 
-
-
+    console.log(formData)
+    
     axios.post(API_BASE_URL+PRODUCT_BASE_URL+'/addProduct',formData).then(
       (success)=>{
 

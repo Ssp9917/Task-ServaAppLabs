@@ -5,7 +5,7 @@ import axios from "axios"
 import { FileUploader } from "react-drag-drop-files";
 
 const EditProduct = () => {
-  const { API_BASE_URL , PRODUCT_BASE_URL } = useContext(MainContext);
+  const { API_BASE_URL , PRODUCT_BASE_URL,getAllProductHandler } = useContext(MainContext);
 
   const [editProduct, setEditProduct] = useState();
 
@@ -40,19 +40,22 @@ const EditProduct = () => {
     e.preventDefault();
 
     const formData = new FormData();
-    formData.append("name", e.target.name.value);
-    formData.append("price", e.target.price.value);
-    formData.append("description", e.target.description.value);
-    formData.append("qty", e.target.qty.value);
-    formData.append("image", file);
+    formData.append("name",e.target.name.value);
+    formData.append("price",e.target.price.value);
+    formData.append("description",e.target.description.value);
+    formData.append("image",file);
+    formData.append("qty",e.target.qty.value);
 
-    console.log(formData)
+
+
     
-    console.log(API_BASE_URL+PRODUCT_BASE_URL+'/editProduct/'+id)
+    console.log(formData)
 
 
     axios.put(API_BASE_URL+PRODUCT_BASE_URL+'/editProduct/'+id,formData).then(
       (success)=>{
+        alert("Product updated success")
+        getAllProductHandler()
         console.log(success)
       }
     ).catch(

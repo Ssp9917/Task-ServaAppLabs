@@ -81,11 +81,11 @@ export const deleteProduct = async (req,res) => {
 export const updateProduct = async (req,res) => {
   try {
 
-    const {name,description,qty,price} = req.body
+    const { name, description, qty, price } = req.body;
     const image = req.files?.image
     const id = req.params.id
 
-    console.log(name,description,qty,price)
+    console.log(req.body)
 
 
     console.log(req.params.id)
