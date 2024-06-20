@@ -25,7 +25,7 @@ const Context = (props) => {
    useEffect(() => {
     let lsData = localStorage.getItem("user");
     setUser(JSON.parse(lsData));
-  }, []);
+  }, [user]);
 
 
   return (
